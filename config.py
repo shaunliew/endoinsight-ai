@@ -127,3 +127,129 @@ Here's an example of how to structure your analysis in JSON format:
 }
 </example>
 """
+
+
+VIDEO_INSTRUCTION_PROMPT = """
+<video_data>
+A series of endoscopic images from a cholecystectomy procedure has been provided in base64 format above. These images represent key frames from the video of the surgical procedure.
+</video_data>
+
+<instructions>
+Analyze the provided endoscopic video frames from a cholecystectomy procedure. Follow these steps in your analysis:
+
+1. Observations: Describe the progression of the procedure as seen in the video frames. List visible elements, including anatomical structures, surgical instruments, and how they change throughout the video.
+
+2. Identification: Based on your observations, identify the key anatomical structures and surgical instruments present throughout the video. Clearly state any uncertainties.
+
+3. Procedural Steps: Outline the main steps of the cholecystectomy procedure as evidenced in the video frames. Describe how the surgeon manipulates tissues and uses instruments.
+
+4. Surgical Technique: Comment on the surgical techniques employed, such as the approach to dissection, use of cautery, and handling of tissues.
+
+5. Critical Moments: Identify any critical moments or key decision points in the procedure as shown in the video frames.
+
+6. Clinical Significance: Explain the importance of the observed techniques and steps in relation to the overall surgical process and potential patient outcomes.
+
+Provide your analysis in a structured JSON format. State any uncertainties explicitly. Use proper medical terminology but explain complex terms. Focus solely on what is visible in the video frames, avoiding speculation about patient history or outcomes not directly evidenced by the images.
+</instructions>
+
+<output_format>
+Structure your response as a JSON object with the following keys:
+
+{
+  "procedure_overview": "Brief description of the overall procedure seen in the video",
+  "observations": [
+    "List of key observations throughout the video"
+  ],
+  "identification": {
+    "structures": [
+      "List of identified anatomical structures"
+    ],
+    "instruments": [
+      "List of identified surgical instruments"
+    ],
+    "uncertainties": [
+      "List of unclear or ambiguous elements"
+    ]
+  },
+  "procedural_steps": [
+    "Outline of main steps observed in the video"
+  ],
+  "surgical_technique": [
+    "Comments on the surgical techniques employed"
+  ],
+  "critical_moments": [
+    "Description of key decision points or critical stages in the procedure"
+  ],
+  "clinical_significance": [
+    "Explanations of the importance of observed techniques and steps"
+  ],
+  "educational_summary": [
+    "Key learning points for medical students and professionals"
+  ]
+}
+
+Ensure that your response is a valid JSON object that can be parsed by standard JSON parsers.
+</output_format>
+
+<example>
+Here's an example of how to structure your analysis in JSON format:
+
+{
+  "procedure_overview": "The video shows a laparoscopic cholecystectomy from initial trocar placement to the removal of the gallbladder",
+  "observations": [
+    "Initial frame shows insertion of laparoscopic instruments",
+    "Surgeon begins by identifying and isolating the gallbladder",
+    "Dissection of the calot's triangle is performed",
+    "Clipping and division of the cystic duct and artery is observed",
+    "Final frames show removal of the gallbladder through a port site"
+  ],
+  "identification": {
+    "structures": [
+      "Gallbladder",
+      "Cystic duct",
+      "Cystic artery",
+      "Liver edge"
+    ],
+    "instruments": [
+      "Laparoscopic grasper",
+      "Dissecting hook",
+      "Clip applier",
+      "Scissors"
+    ],
+    "uncertainties": [
+      "Exact position of the common bile duct is not clearly visible"
+    ]
+  },
+  "procedural_steps": [
+    "1. Trocar placement and initial abdominal exploration",
+    "2. Identification and grasping of the gallbladder fundus",
+    "3. Dissection of the calot's triangle",
+    "4. Identification and isolation of the cystic duct and artery",
+    "5. Clipping and division of the cystic duct and artery",
+    "6. Dissection of the gallbladder from the liver bed",
+    "7. Removal of the gallbladder through a port site"
+  ],
+  "surgical_technique": [
+    "The surgeon uses a 'critical view of safety' technique before clipping the cystic structures",
+    "Careful blunt and sharp dissection is employed to avoid injury to surrounding structures",
+    "Efficient use of cautery is observed for hemostasis during gallbladder removal"
+  ],
+  "critical_moments": [
+    "Identification and isolation of the cystic duct and artery before clipping",
+    "Ensuring the 'critical view of safety' before dividing any structures",
+    "Careful dissection of the gallbladder from the liver bed to avoid perforation"
+  ],
+  "clinical_significance": [
+    "The 'critical view of safety' technique is crucial to avoid bile duct injuries",
+    "Proper identification of anatomical structures prevents major complications",
+    "Meticulous hemostasis during gallbladder removal reduces post-operative complications"
+  ],
+  "educational_summary": [
+    "This video demonstrates the standard steps of a laparoscopic cholecystectomy",
+    "It highlights the importance of careful dissection and structure identification",
+    "The use of the 'critical view of safety' technique is clearly illustrated",
+    "Proper instrument handling and tissue manipulation techniques are showcased"
+  ]
+}
+</example>
+"""

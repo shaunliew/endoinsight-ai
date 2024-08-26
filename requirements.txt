@@ -16,6 +16,8 @@ huggingface-hub==0.24.6
 idna==3.8
 jiter==0.5.0
 jmespath==1.0.1
+numpy==2.1.0
+opencv-python==4.10.0.84
 packaging==24.1
 pydantic==2.8.2
 pydantic_core==2.20.1
