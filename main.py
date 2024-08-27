@@ -38,7 +38,6 @@ if __name__ == "__main__":
     result = process_video(video_file_path, VIDEO_INSTRUCTION_PROMPT)
     print(result)
 
-    # get the local image
     # image_path = "dataset/video01/video01_16345/frame_16345_endo.png"
     # image_block = create_image_message(image_path)
 
