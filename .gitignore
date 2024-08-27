@@ -1,6 +1,9 @@
 dataset/
+data/
 venv/
 test/
 .env
 __pycache__/
+runs/
+weights/
 .DS_Store
