@@ -2,8 +2,10 @@ dataset/
 data/
 venv/
 test/
+wandb/
 .env
 __pycache__/
 runs/
 weights/
 .DS_Store
+gcp-credential.json

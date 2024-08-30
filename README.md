@@ -45,3 +45,12 @@ AI-Powered Cholecystectomy Surgeries Video Analysis and Explanation System
 - Description: Develop a simple web interface for uploading images, running analyses, and viewing the integrated image-text output. Users should be able to interact with both the image and the generated text.
 
 - Tools: Streamlit
+
+
+## Setup GCP Credentials
+
+get service account JSON from GCP Project in order to use GCP Service.
+
+```bash
+export GOOGLE_APPLICATION_CREDENTIALS="gcp-credential.json"
+```

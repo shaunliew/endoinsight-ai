@@ -1,7 +1,17 @@
-from ultralytics import YOLO
+from google.cloud import storage
 
-# Load a model
-model = YOLO("weights/yolov8n-seg.pt")  # load an official model
+def list_buckets():
+    """Lists all buckets."""
+    storage_client = storage.Client()
+    buckets = storage_client.list_buckets()
 
-# Predict with the model
-results = model("test/video.mp4", save=True, project="/Users/shaunliew/Documents/endoinsight-ai/runs")  # predict on an image
+    print("Buckets:")
+    for bucket in buckets:
+        print(bucket.name)
+
+if __name__ == "__main__":
+    try:
+        list_buckets()
+        print("Authentication successful!")
+    except Exception as e:
+        print(f"Authentication failed. Error: {e}")
