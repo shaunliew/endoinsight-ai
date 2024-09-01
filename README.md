@@ -54,3 +54,11 @@ get service account JSON from GCP Project in order to use GCP Service.
 ```bash
 export GOOGLE_APPLICATION_CREDENTIALS="gcp-credential.json"
 ```
+
+## Connect GCS to Vertex AI
+
+```bash
+MY_BUCKET=endoinsight-ai
+cd ~/
+gcsfuse --implicit-dirs --rename-dir-limit=100 --max-conns-per-host=100 $MY_BUCKET "/home/jupyter/gcs"
+```
