@@ -35,24 +35,31 @@ As an educator, you strive to make each image analysis a valuable learning exper
 """
 
 INSTRUCTION_PROMPT = """
-<image_data>
-The endoscopic image from a cholecystectomy procedure has been provided in base64 format above.
-</image_data>
+<video_data>
+A series of endoscopic images from a cholecystectomy procedure has been provided in base64 format above. These images represent key frames from the video of the surgical procedure. Additionally, YOLOv8 segmentation results have been provided for each frame, including:
+- Class predictions and confidence scores
+- General position in the frame (e.g., upper left, middle center)
+- Precise bounding box coordinates
+- Relative position of the object's center
+- Size dimensions and area in pixels
+- Percentage of frame coverage
+- Aspect ratio of the object
+</video_data>
 
 <instructions>
-Analyze the provided endoscopic image from a cholecystectomy procedure. Follow these steps in your analysis:
+Analyze the provided endoscopic video frames from a cholecystectomy procedure, taking into account the detailed YOLOv8 segmentation results. Follow these steps in your analysis:
 
-1. Observations: List all visible elements in the image, including anatomical structures, surgical instruments, and tissue characteristics. Be specific about colors, shapes, and positions.
+1. Observations: Describe the progression of the procedure as seen in the video frames. List visible elements, including anatomical structures and surgical instruments, and how they change throughout the video. Use the detailed YOLOv8 segmentation results to provide precise descriptions of object locations, sizes, and movements.
 
-2. Identification: Based on your observations, identify the key anatomical structures and surgical instruments present. Clearly state any uncertainties.
+2. Identification: Based on your observations and the YOLOv8 segmentation results, identify the key anatomical structures and surgical instruments present throughout the video. Use the detailed information about object positions, sizes, and shapes to support your identifications. Note any changes in the size or position of objects across frames.
 
-3. Pathological Assessment: Describe any visible signs of pathology or abnormality in the tissues or structures.
+3. Spatial Relationships: Describe how different detected objects relate to each other spatially. Use the relative position information to explain how instruments interact with anatomical structures or how different structures are positioned relative to each other.
 
-4. Surgical Context: Infer the stage of the cholecystectomy procedure this image likely represents.
+4. Procedural Analysis: Analyze the surgical technique based on the movement and interaction of detected objects. Use the frame coverage and position information to infer the surgeon's focus and the progress of the procedure.
 
-5. Clinical Significance: Explain the importance of the observed features in relation to the surgical process and potential patient outcomes.
+5. Uncertainty and Ambiguity: Clearly state any uncertainties or discrepancies between your observations and the YOLOv8 results. Discuss any ambiguities in object identification or instances where the segmentation results might not align with expected anatomical or instrumental arrangements.
 
-Provide your analysis in a structured JSON format. State any uncertainties explicitly. Use proper medical terminology but explain complex terms. Focus solely on what is visible in the image, avoiding speculation about patient history or outcomes not directly evidenced by the image.
+Provide your analysis in a structured JSON format. State any uncertainties explicitly. Use proper medical terminology but explain complex terms. Focus solely on what is visible in the image and YOLOv8 segmentation results, avoiding speculation about patient history or outcomes not directly evidenced by the image.
 </instructions>
 
 <output_format>

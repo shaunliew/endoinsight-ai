@@ -1,14 +1,35 @@
 from config import *
 from helper import *
 
-def process_video(video_path, prompt, model=MODEL_TYPE, max_images=20):
-    video_blocks = create_video_message(video_path, max_images)
-    
+def process_video(video_path, prompt, yolo_model_path, model=MODEL_TYPE, max_images=20, conf_threshold=0.8):
+    # Get total frame count
+    cap = cv2.VideoCapture(video_path)
+    total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+    cap.release()
+
+    # Calculate frame indices to sample
+    if total_frames <= max_images:
+        frame_indices = list(range(total_frames))
+    else:
+        frame_indices = [int(i * (total_frames - 1) / (max_images - 1)) for i in range(max_images)]
+
+    # Process video with YOLO
+    yolo_results = process_video_with_yolo(video_path, yolo_model_path, conf_threshold)
+
+    # Create video message for selected frames
+    video_blocks = create_video_message(video_path, max_images, frame_indices)
+
     labeled_content = []
-    for i, block in enumerate(video_blocks, start=1):
+    for i, (block, frame_index) in enumerate(zip(video_blocks, frame_indices), start=1):
+        yolo_frame = yolo_results[frame_index]
+        yolo_detections = []
+        for detection in yolo_frame['detections']:
+            yolo_detections.append(f"Class: {detection['class']}, Confidence: {detection['confidence']:.2f}, {detection['mask_description']}")
+        
         labeled_content.extend([
-            {"type": "text", "text": f"Frame {i}:"},
-            block
+            {"type": "text", "text": f"Frame {frame_index + 1} of {total_frames}:"},
+            block,
+            {"type": "text", "text": f"YOLO Detections: {'; '.join(yolo_detections)}"}
         ])
     
     labeled_content.append({
@@ -35,31 +56,6 @@ def process_video(video_path, prompt, model=MODEL_TYPE, max_images=20):
 
 if __name__ == "__main__":
     video_file_path = "test/video.mp4"
-    result = process_video(video_file_path, VIDEO_INSTRUCTION_PROMPT)
+    yolo_model_path = "weights/trained_model.pt"
+    result = process_video(video_file_path, VIDEO_INSTRUCTION_PROMPT, yolo_model_path)
     print(result)
-
-    # image_path = "dataset/video01/video01_16345/frame_16345_endo.png"
-    # image_block = create_image_message(image_path)
-
-    # message_list = [
-    #         {
-    #             "role": "user",
-    #             "content": [
-    #                 image_block,
-    #                 {
-    #                     "type": "text",
-    #                     "text": INSTRUCTION_PROMPT
-    #                 }
-    #             ],
-    #         }
-    #     ]
-
-    # response = client.messages.create(
-    #     model=MODEL_TYPE,
-    #     max_tokens=1024,
-    #     system = SYSTEM_PROMPT,
-    #     messages=message_list,
-    #     temperature=0.05,
-    # )
-
-    # print(response.content[0].text)
