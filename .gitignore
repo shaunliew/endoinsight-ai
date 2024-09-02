@@ -4,6 +4,7 @@ venv/
 test/
 wandb/
 output/
+uploads/
 .env
 __pycache__/
 runs/
