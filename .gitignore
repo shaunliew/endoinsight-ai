@@ -3,6 +3,7 @@ data/
 venv/
 test/
 wandb/
+output/
 .env
 __pycache__/
 runs/
