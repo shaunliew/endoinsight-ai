@@ -60,5 +60,5 @@ export GOOGLE_APPLICATION_CREDENTIALS="gcp-credential.json"
 ```bash
 MY_BUCKET=endoinsight-ai
 cd ~/
-gcsfuse --implicit-dirs --rename-dir-limit=100 --max-conns-per-host=100 $MY_BUCKET "/home/jupyter/gcs"
+gcsfuse --implicit-dirs --rename-dir-limit=100 --max-conns-per-host=100 $MY_BUCKET "/home/jupyter/endoinsight-ai/gcs"
 ```
