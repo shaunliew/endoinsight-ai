@@ -3,6 +3,8 @@ import cv2
 from ultralytics import YOLO
 import numpy as np
 import torch
+import subprocess
+import os
 from typing import Dict, Tuple, NamedTuple
 from google.cloud import storage
 
@@ -85,6 +87,19 @@ class SegmentationClasses:
         return "Unknown"
 
 def process_video_with_yolo(video_path, yolo_model_path, output_path, conf_threshold=0.8):
+    # Convert input video to MP4 format
+    temp_input_path = f"{video_path}_temp_input.mp4"
+    ffmpeg_input_command = [
+        "ffmpeg",
+        "-i", video_path,
+        "-c:v", "libx264",
+        "-preset", "ultrafast",
+        "-crf", "23",
+        "-y",
+        temp_input_path
+    ]
+    subprocess.run(ffmpeg_input_command, check=True)
+
     if torch.backends.mps.is_available():
         device = torch.device("mps")
     else:
@@ -93,13 +108,14 @@ def process_video_with_yolo(video_path, yolo_model_path, output_path, conf_thres
     model = YOLO(yolo_model_path)
     model.to(device)
     
-    cap = cv2.VideoCapture(video_path)
+    cap = cv2.VideoCapture(temp_input_path)
     frame_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     frame_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
     fps = int(cap.get(cv2.CAP_PROP_FPS))
     
+    temp_output_path = f"{output_path}_temp.mp4"
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-    out = cv2.VideoWriter(output_path, fourcc, fps, (frame_width, frame_height))
+    out = cv2.VideoWriter(temp_output_path, fourcc, fps, (frame_width, frame_height))
     
     segmentation_results = {}
     frame_count = 0
@@ -215,6 +231,26 @@ def process_video_with_yolo(video_path, yolo_model_path, output_path, conf_thres
 
     cap.release()
     out.release()
+
+    # Convert the output video to a web-compatible format using FFmpeg
+    ffmpeg_output_command = [
+        "ffmpeg",
+        "-i", temp_output_path,
+        "-c:v", "libx264",
+        "-preset", "medium",
+        "-crf", "23",
+        "-c:a", "aac",
+        "-b:a", "128k",
+        "-movflags", "+faststart",
+        "-y",
+        output_path
+    ]
+    subprocess.run(ffmpeg_output_command, check=True)
+
+    # Clean up temporary files
+    os.remove(temp_input_path)
+    os.remove(temp_output_path)
+
     return segmentation_results
 
 def upload_video_to_gcs(bucket_name, video_data, video_path):
