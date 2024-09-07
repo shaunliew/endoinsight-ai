@@ -1,29 +1,10 @@
-// import Hero from "../components/Hero";
+import Hero from "../components/Hero";
 import Timeline from "../components/Timeline";
-
+import FileUpload from "../components/FileUpload";
 function MainPage() {
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="hero bg-base-200 rounded-box mb-8">
-        <div className="hero-content text-center">
-          <div className="max-w-4xl">
-            <h1 className="text-5xl font-bold mb-6">EndoInsight AI</h1>
-            <p className="text-2xl mb-4 text-primary">
-              AI-Powered Cholecystectomy Surgeries Video Analysis and Explanation System
-            </p>
-            <p className="text-lg mb-4 italic">
-              Revolutionizing surgical education and analysis through advanced AI technology
-            </p>
-            <p className="text-base">
-              EndoInsight AI combines cutting-edge computer vision and natural language processing to provide 
-              detailed, expert-level analysis of cholecystectomy (gallbladder removal) surgery videos. Our system 
-              offers valuable insights for medical students, surgeons, and healthcare professionals, enhancing 
-              understanding of surgical techniques and anatomical structures.
-            </p>
-          </div>
-        </div>
-      </div>
-      
+      <Hero />
       <div className="grid md:grid-cols-2 gap-8">
         <div className="card bg-base-100 shadow-xl">
           <div className="card-body flex flex-col items-center">
@@ -32,21 +13,7 @@ function MainPage() {
           </div>
         </div>
         
-        <div className="card bg-base-100 shadow-xl">
-          <div className="card-body">
-            <h2 className="card-title text-2xl mb-4 justify-center underline">Try it out now</h2>
-            <p className="mb-4">Experience the power of EndoInsight AI firsthand. Upload your cholecystectomy video for instant analysis.</p>
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text">Upload your video (MP4 or MOV, max 800MB)</span>
-              </label>
-              <input type="file" className="file-input file-input-bordered file-input-primary w-full" accept=".mp4,.mov" />
-            </div>
-            <div className="card-actions justify-end mt-4">
-              <button className="btn btn-primary">Analyze Video</button>
-            </div>
-          </div>
-        </div>
+        <FileUpload />
       </div>
       
       <div className="mt-8">
