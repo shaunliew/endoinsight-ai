@@ -1,7 +1,12 @@
 import Hero from "../components/Hero";
 import Timeline from "../components/Timeline";
 import FileUpload from "../components/FileUpload";
+import AnalysisResultCard from "../components/AnalysisResultCard";
+import useFileStore from '../stores/fileStore';
+
 function MainPage() {
+  const { analysisResult } = useFileStore();
+
   return (
     <div className="container mx-auto px-4 py-8">
       <Hero />
@@ -15,6 +20,12 @@ function MainPage() {
         
         <FileUpload />
       </div>
+      
+      {analysisResult && (
+        <div className="mt-8">
+          <AnalysisResultCard result={analysisResult} />
+        </div>
+      )}
       
       <div className="mt-8">
         <div className="alert alert-info">
