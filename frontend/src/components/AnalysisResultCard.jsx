@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
-
 import { ChevronRight, ChevronDown } from 'lucide-react';
+import ReactPlayer from 'react-player'
 
 function AnalysisResultCard({ result }) {
   if (!result || !result.analysis_result) {
@@ -83,15 +83,17 @@ function AnalysisResultCard({ result }) {
         {renderSection("Clinical Significance", analysisData.clinical_significance)}
         {renderSection("Educational Summary", analysisData.educational_summary)}
         
-        <div className="card-actions justify-end mt-6">
-          <a 
-            href={result.output_video_path} 
-            target="_blank" 
-            rel="noopener noreferrer" 
-            className="btn btn-primary"
-          >
-            View Analyzed Video
-          </a>
+        <div className="mt-6">
+          <h3 className="text-xl font-semibold mb-2">Analyzed Video</h3>
+          <div className="relative w-full" style={{ paddingTop: '56.25%' }}> {/* 16:9 Aspect Ratio */}
+            <ReactPlayer
+              url={result.output_video_path}
+              controls
+              width="100%"
+              height="100%"
+              style={{ position: 'absolute', top: 0, left: 0 }}
+            />
+          </div>
         </div>
       </div>
     </div>

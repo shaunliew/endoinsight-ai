@@ -112,7 +112,7 @@ function FileUpload() {
             "The video showcases effective instrument handling and tissue manipulation skills, which are essential for performing this minimally invasive surgical procedure safely and efficiently."
           ]
         }),
-        output_video_path: "outputs/08f77272-839d-4ef4-99f7-ada5ee603cb1_output.mp4"
+        output_video_path: "https://storage.cloud.google.com/endoinsight-ai/output/9b629baf-3643-443b-8eaa-8580a32f33b8.mp4?authuser=2"
       };
       
       setAnalysisResult(mockResult);
