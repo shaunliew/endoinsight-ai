@@ -11,7 +11,7 @@ function MainPage() {
     <div className="container mx-auto px-4 py-8">
       <Hero />
       <div className="grid md:grid-cols-2 gap-8">
-        <div className="card bg-base-100 shadow-xl">
+        <div className="card bg-base-100 shadow-xl border">
           <div className="card-body flex flex-col items-center">
             <h2 className="card-title text-2xl mb-4 justify-center underline">How It Works</h2>
             <Timeline />

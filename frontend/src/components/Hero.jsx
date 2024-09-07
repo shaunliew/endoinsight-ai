@@ -3,7 +3,7 @@ import TypingText from "./TypingText";
 import curveline from "../assets/curveline.svg";
 const Hero = () => {
     return (
-        <div className="hero bg-base-100 rounded-box mb-8 shadow-xl"
+        <div className="hero bg-base-100 rounded-box mb-8 "
         style={{
     backgroundImage: `url(${curveline})`,
   }}>

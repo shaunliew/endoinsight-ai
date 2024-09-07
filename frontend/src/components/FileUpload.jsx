@@ -123,7 +123,7 @@ function FileUpload() {
   };
 
   return (
-    <div className="card bg-base-100 shadow-xl">
+    <div className="card bg-base-100 border shadow-xl">
       <div className="card-body">
         <h2 className="card-title text-2xl mb-4 justify-center underline">Try it out now</h2>
         <p className="">Experience the power of EndoInsight AI firsthand. Upload your cholecystectomy video for instant analysis.</p>
