@@ -9,7 +9,8 @@ function FileUpload() {
     setError, 
     isLoading, 
     setIsLoading, 
-    setAnalysisResult 
+    setAnalysisResult,
+    resetAnalysis 
   } = useFileStore();
 
   const validateFile = (file) => {
@@ -36,6 +37,7 @@ function FileUpload() {
       } else {
         setError('');
         setFile(selectedFile);
+        resetAnalysis(); // Reset analysis when a new file is uploaded
       }
     }
   };
