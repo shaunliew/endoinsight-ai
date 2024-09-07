@@ -4,6 +4,7 @@ from ultralytics import YOLO
 import numpy as np
 import torch
 from typing import Dict, Tuple, NamedTuple
+from google.cloud import storage
 
 def create_video_message(video_path, max_images=20, frame_indices=None):
     cap = cv2.VideoCapture(video_path)
@@ -215,3 +216,20 @@ def process_video_with_yolo(video_path, yolo_model_path, output_path, conf_thres
     cap.release()
     out.release()
     return segmentation_results
+
+def upload_video_to_gcs(bucket_name, video_data, video_path):
+    storage_client = storage.Client()
+    bucket = storage_client.get_bucket(bucket_name)
+    
+    # Create a blob object to represent the video file in the bucket
+    blob = bucket.blob(video_path)
+    
+    # Upload the video file to the bucket
+    blob.upload_from_string(video_data, content_type="video/mp4")
+    
+    # Make the blob publicly accessible
+    blob.make_public()
+    
+    # Get the public URL
+    video_url = blob.public_url
+    return video_url

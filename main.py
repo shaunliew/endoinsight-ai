@@ -6,7 +6,6 @@ import json
 from config import *
 from helper import *
 import uuid
-
 app = FastAPI()
 
 # Create an APIRouter
@@ -95,12 +94,24 @@ async def process_video_endpoint(file: UploadFile = File(...)):
 
         # Parse the result string into a JSON object
         result_json = json.loads(result)
+        
+        # Read the processed video file
+        with open(output_path, "rb") as video_file:
+            video_data = video_file.read()
+        
+        # Upload the processed video to GCS and get a public URL
+        bucket_name = "endoinsight-output"
+        gcs_video_path = f"output/{output_filename}"
+        gcs_public_url = upload_video_to_gcs(bucket_name, video_data, gcs_video_path)
 
+        # Delete local files
+        # os.remove(input_path)
+        # os.remove(output_path)
+        
         # Prepare the content of the response
         content = {
             "analysis_result": result_json,
-            "input_video_path": input_path,
-            "output_video_path": output_path
+            "output_video_url": gcs_public_url
         }
 
         # Return the response in the new format

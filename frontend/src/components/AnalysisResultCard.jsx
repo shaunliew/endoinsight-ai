@@ -87,7 +87,7 @@ function AnalysisResultCard({ result }) {
           <h3 className="text-xl font-semibold mb-2">Analyzed Video</h3>
           <div className="relative w-full" style={{ paddingTop: '56.25%' }}> {/* 16:9 Aspect Ratio */}
             <ReactPlayer
-              url={result.output_video_path}
+              url={result.output_video_url}
               controls
               width="100%"
               height="100%"
