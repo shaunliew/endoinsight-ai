@@ -1,4 +1,4 @@
-# EndoInsight AI Backend
+# EndoInsight AI
 
 AI-Powered Cholecystectomy Surgeries Video Analysis and Explanation System
 
