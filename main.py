@@ -1,4 +1,4 @@
-from fastapi import FastAPI, File, UploadFile, status, APIRouter
+from fastapi import FastAPI, File, UploadFile, status, APIRouter, HTTPException
 from fastapi.responses import JSONResponse
 import shutil
 import os
@@ -6,15 +6,22 @@ import json
 from config import *
 from helper import *
 import uuid
+from pymongo import MongoClient
+from bson import ObjectId
+
 app = FastAPI()
 
 # Create an APIRouter
 api_router = APIRouter()
 
+# MongoDB connection
+mongo_client = MongoClient("mongodb://localhost:27017/")
+db = mongo_client["video_processing_db"]
+collection = db["processed_videos"]
+
 @app.get("/")
 async def root():
     return {"message": "Welcome to the Video Processing API", "status": "operational"}
-
 
 def process_video(video_path, prompt, yolo_model_path, output_path, model=MODEL_TYPE, max_images=20, conf_threshold=0.8):
     # Get total frame count
@@ -104,12 +111,22 @@ async def process_video_endpoint(file: UploadFile = File(...)):
         gcs_video_path = f"output/{output_filename}"
         gcs_public_url = upload_video_to_gcs(bucket_name, video_data, gcs_video_path)
 
+        # Save data to MongoDB
+        mongo_data = {
+            # "input_filename": input_filename,
+            # "output_filename": output_filename,
+            "analysis_result": result_json,
+            "output_video_url": gcs_public_url
+        }
+        inserted_id = collection.insert_one(mongo_data).inserted_id
+
         # Delete local files
         # os.remove(input_path)
         # os.remove(output_path)
         
         # Prepare the content of the response
         content = {
+            "id": str(inserted_id),
             "analysis_result": result_json,
             "output_video_url": gcs_public_url
         }
@@ -129,6 +146,39 @@ async def process_video_endpoint(file: UploadFile = File(...)):
             content={
                 "success": False,
                 "message": f"Error processing video: {str(e)}",
+                "content": None
+            },
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+
+@api_router.get("/processed_video/{video_id}")
+async def get_processed_video(video_id: str):
+    try:
+        # Convert string ID to ObjectId
+        obj_id = ObjectId(video_id)
+        
+        # Retrieve data from MongoDB
+        video_data = collection.find_one({"_id": obj_id})
+        
+        if video_data:
+            # Convert ObjectId to string for JSON serialization
+            video_data["_id"] = str(video_data["_id"])
+            
+            return JSONResponse(
+                content={
+                    "success": True,
+                    "message": f"Video data {video_id} retrieved successfully.",
+                    "content": video_data
+                },
+                status_code=status.HTTP_200_OK
+            )
+        else:
+            raise HTTPException(status_code=404, detail="Video not found")
+    except Exception as e:
+        return JSONResponse(
+            content={
+                "success": False,
+                "message": f"Error retrieving video data: {str(e)}",
                 "content": None
             },
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
