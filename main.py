@@ -1,5 +1,6 @@
 from fastapi import FastAPI, File, UploadFile, status, APIRouter, HTTPException
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 import shutil
 import os
 import json
@@ -10,6 +11,16 @@ from pymongo import MongoClient
 from bson import ObjectId
 
 app = FastAPI()
+
+# Configure CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],  # Add your frontend URL here
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 # Create an APIRouter
 api_router = APIRouter()

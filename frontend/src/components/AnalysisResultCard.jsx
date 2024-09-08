@@ -7,7 +7,7 @@ function AnalysisResultCard({ result }) {
     return null;
   }
 
-  const analysisData = JSON.parse(result.analysis_result);
+  const analysisData = result.analysis_result;
 
   function renderList(items) {
     return (
@@ -56,8 +56,20 @@ function AnalysisResultCard({ result }) {
   return (
     <div className="card bg-base-100 border shadow-xl">
       <div className="card-body">
-        <h2 className="card-title text-3xl font-bold mb-6">Analysis Results</h2>
-        
+        <h2 className="card-title text-3xl font-bold mb-1">Analysis Results</h2>
+        <div className="mb-1">
+          <h3 className="text-xl font-semibold mb-2">Analyzed Video</h3>
+          <div className="relative w-full" style={{ paddingTop: '56.25%' }}> {/* 16:9 Aspect Ratio */}
+            <ReactPlayer
+              url={result.output_video_url}
+              controls
+              width="100%"
+              height="100%"
+              style={{ position: 'absolute', top: 0, left: 0 }}
+            />
+          </div>
+        </div>
+
         {renderSection("Procedure Overview", analysisData.procedure_overview)}
         {renderSection("Observations", analysisData.observations)}
         
@@ -83,18 +95,7 @@ function AnalysisResultCard({ result }) {
         {renderSection("Clinical Significance", analysisData.clinical_significance)}
         {renderSection("Educational Summary", analysisData.educational_summary)}
         
-        <div className="mt-6">
-          <h3 className="text-xl font-semibold mb-2">Analyzed Video</h3>
-          <div className="relative w-full" style={{ paddingTop: '56.25%' }}> {/* 16:9 Aspect Ratio */}
-            <ReactPlayer
-              url={result.output_video_url}
-              controls
-              width="100%"
-              height="100%"
-              style={{ position: 'absolute', top: 0, left: 0 }}
-            />
-          </div>
-        </div>
+        
       </div>
     </div>
   );
