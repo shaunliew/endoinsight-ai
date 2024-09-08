@@ -115,7 +115,7 @@ access the `http://localhost:5173/`
 get service account JSON from GCP Project in order to use GCP Service. Make sure to store it into the repo and run the command below before runs the backend python code.
 
 ```bash
-export GOOGLE_APPLICATION_CREDENTIALS="gcp-credential.json"
+export GOOGLE_APPLICATION_CREDENTIALS="credential.json"
 ```
 
 ### Run the FastAPI backend
@@ -145,9 +145,9 @@ access the `http://0.0.0.0:8000`
 ### Connect GCS to Vertex AI for model training (optional)
 
 ```bash
-MY_BUCKET=endoinsight-ai
+MY_BUCKET=<own_bucket_name>
 cd ~/
-gcsfuse --implicit-dirs --rename-dir-limit=100 --max-conns-per-host=100 $MY_BUCKET "/home/jupyter/endoinsight-ai/gcs"
+gcsfuse --implicit-dirs --rename-dir-limit=100 --max-conns-per-host=100 $MY_BUCKET "/home/jupyter/<cloned_repo_name>/gcs"
 ```
 
 ### FastAPI Endpoints
