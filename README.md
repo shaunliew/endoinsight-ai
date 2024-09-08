@@ -32,6 +32,8 @@ EndoInsight AI combines cutting-edge computer vision and natural language proces
   
 - [Vertex AI](https://cloud.google.com/vertex-ai/docs/start/introduction-unified-platform): For YOLOv8 object segmentation model training
 
+- [CholecSeg8k Dataset](https://www.kaggle.com/datasets/newslab/cholecseg8k): The endoscopic images dataset used for model training
+
 ### Frontend
 
 - [React Vite](https://vitejs.dev/guide/): For building the user interface
